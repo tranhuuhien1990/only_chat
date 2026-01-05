@@ -6,6 +6,7 @@ abstract class ChatRepository {
   Stream<List<ChatRoom>> getChatRooms();
   Stream<List<Message>> getMessages(String roomId);
   Future<void> sendMessage(String roomId, String content);
+  Future<String> createChatRoom(String name, List<String> otherMemberIds);
 }
 
 class MockChatRepository implements ChatRepository {
@@ -58,6 +59,12 @@ class MockChatRepository implements ChatRepository {
   Future<void> sendMessage(String roomId, String content) async {
     await Future.delayed(const Duration(milliseconds: 500));
     print('Mock Sending message to $roomId: $content');
+  }
+
+  @override
+  Future<String> createChatRoom(String name, List<String> otherMemberIds) async {
+    print('Mock Creating chat room: $name');
+    return 'new_room_id';
   }
 }
 

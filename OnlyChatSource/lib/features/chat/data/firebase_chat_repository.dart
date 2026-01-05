@@ -84,6 +84,24 @@ class FirebaseChatRepository implements ChatRepository {
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
+
+  @override
+  Future<String> createChatRoom(String name, List<String> otherMemberIds) async {
+    final user = _auth.currentUser;
+    if (user == null) throw Exception('User not logged in');
+
+    final members = [user.uid, ...otherMemberIds];
+    
+    final docRef = await _firestore.collection('conversations').add({
+      'name': name,
+      'members': members,
+      'isGroup': otherMemberIds.length > 1,
+      'updatedAt': FieldValue.serverTimestamp(),
+      'lastMessage': 'Bắt đầu cuộc trò chuyện mới',
+    });
+
+    return docRef.id;
+  }
 }
 
 // Cập nhật provider để sử dụng FirebaseChatRepository nếu người dùng đã login
