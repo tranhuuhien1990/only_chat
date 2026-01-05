@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -7,7 +8,11 @@ import 'chat_repository.dart';
 
 class FirebaseChatRepository implements ChatRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseDatabase _rtdb = FirebaseDatabase.instance;
+  // Thay đổi URL dưới đây bằng URL từ Firebase Console của bạn
+  final FirebaseDatabase _rtdb = FirebaseDatabase.instanceFor(
+    app: Firebase.app(),
+    databaseURL: 'https://only-chat-2026-default-rtdb.asia-southeast1.firebasedatabase.app/', 
+  );
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
