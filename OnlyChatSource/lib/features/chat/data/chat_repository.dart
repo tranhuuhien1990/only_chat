@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../domain/models.dart';
+import 'firebase_chat_repository.dart';
 
 abstract class ChatRepository {
   Stream<List<ChatRoom>> getChatRooms();
@@ -55,14 +56,14 @@ class MockChatRepository implements ChatRepository {
 
   @override
   Future<void> sendMessage(String roomId, String content) async {
-    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 500));
-    print('Sending message to $roomId: $content');
+    print('Mock Sending message to $roomId: $content');
   }
 }
 
 final chatRepositoryProvider = Provider<ChatRepository>((ref) {
-  return MockChatRepository();
+  // Trả về FirebaseChatRepository để triển khai thực tế
+  return FirebaseChatRepository();
 });
 
 final chatRoomsProvider = StreamProvider<List<ChatRoom>>((ref) {

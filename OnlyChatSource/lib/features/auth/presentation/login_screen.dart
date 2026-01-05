@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,6 +11,29 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _idController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _handleLogin() async {
+    setState(() => _isLoading = true);
+    try {
+      // Vì là OnlyChat tối giản, chúng ta hỗ trợ đăng nhập ẩn danh 
+      // hoặc bạn có thể mở rộng login bằng SĐT/Email sau.
+      await FirebaseAuth.instance.signInAnonymously();
+      if (mounted) {
+        context.go('/chats');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Lỗi đăng nhập: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +77,14 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
-                // Simulate login
-                context.go('/chats');
-              },
-              child: const Text('Tiếp tục'),
+              onPressed: _isLoading ? null : _handleLogin,
+              child: _isLoading 
+                ? const SizedBox(
+                    height: 20, 
+                    width: 20, 
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white)
+                  )
+                : const Text('Tiếp tục (Ẩn danh)'),
             ),
             const SizedBox(height: 16),
             Center(

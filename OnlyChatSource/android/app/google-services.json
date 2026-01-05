@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "333406573402",
+    "project_id": "only-chat-2026",
+    "storage_bucket": "only-chat-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333406573402:android:f5239c6caf8044e3469963",
+        "android_client_info": {
+          "package_name": "com.onlychat.onlychat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmgemML2hc6rlWrzaCm3jKjo8nbzcEaV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
