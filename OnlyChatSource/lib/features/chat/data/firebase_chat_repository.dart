@@ -19,10 +19,9 @@ class FirebaseChatRepository implements ChatRepository {
     return _firestore
         .collection('conversations')
         .where('members', arrayContains: user.uid)
-        .orderBy('updatedAt', descending: true)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
+      final rooms = snapshot.docs.map((doc) {
         final data = doc.data();
         return ChatRoom(
           id: doc.id,
@@ -33,6 +32,11 @@ class FirebaseChatRepository implements ChatRepository {
           isGroup: data['isGroup'] ?? false,
         );
       }).toList();
+
+      // Sắp xếp thủ công trên Client để tránh lỗi Index
+      rooms.sort((a, b) => (b.lastMessageTime ?? DateTime(0))
+          .compareTo(a.lastMessageTime ?? DateTime(0)));
+      return rooms;
     });
   }
 
